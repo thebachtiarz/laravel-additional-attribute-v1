@@ -1,0 +1,47 @@
+{
+    "name": "thebachtiarz/laravel-additional-attribute-v1",
+    "description": "A Simple Additional Attribute for Laravel Project v1",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "laravel",
+        "thebachtiarz",
+        "attribute"
+    ],
+    "support": {
+        "issues": "https://github.com/thebachtiarz/laravel-additional-attribute-v1/issues",
+        "source": "https://github.com/thebachtiarz/laravel-additional-attribute-v1"
+    },
+    "authors": [
+        {
+            "name": "thebachtiarz",
+            "email": "bachtiarptibinlppnri2417@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "laravel/framework": "^8.12",
+        "thebachtiarz/laravel-toolkit-v1": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "TheBachtiarz\\AdditionalAttribute\\": "src/"
+        },
+        "files": [
+            "helper/helper.php"
+        ]
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "TheBachtiarz\\AdditionalAttribute\\AdditionalAttributeServiceProvider"
+            ]
+        }
+    },
+    "homepage": "https://github.com/thebachtiarz/laravel-additional-attribute-v1",
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
