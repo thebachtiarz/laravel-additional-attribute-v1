@@ -16,7 +16,6 @@ class CreateAdditionalAttributesTable extends Migration
         Schema::create('additional_attributes', function (Blueprint $table) {
             $table->id();
             $table->morphs('modelable');
-            $table->string('model_id');
             $table->string('name');
             $table->string('type');
             $table->text('value');
