@@ -36,15 +36,11 @@ use \TheBachtiarz\AdditionalAttribute\Service\AdditionalAttributes;
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use TheBachtiarz\AdditionalAttribute\Service\AdditionalAttributes;
 
 class User extends Model
 {
-    use HasFactory;
-
-    use AdditionalAttributes;
+    use \TheBachtiarz\AdditionalAttribute\Service\AdditionalAttributes;
 }
 ```
 -------
@@ -54,6 +50,13 @@ class User extends Model
 Create new attribute or Update existing attribute in model.
 
 ``` bash
+/**
+ * create or update attribute
+ *
+ * @param string $attrName
+ * @param mixed $attrValue
+ * @return AdditionalAttribute|null
+ */
 public function setAttr(string $attrName, $attrValue): ?AdditionalAttribute;
 ```
 ``` bash
@@ -62,25 +65,60 @@ App\Models\User::find(1)->setAttr('attrName', 'attrValue');
 - Get Attribute By Name. <br/>
 Get attribute in model by attribute name.
 ``` bash
-public function getAttr(string $attrName): ?mixed;
+/**
+ * get attribute by name
+ *
+ * @param string $attrName
+ * @param boolean $map default: false
+ * @return mixed
+ */
+public function getAttr(string $attrName, bool $map = false): mixed;
 ```
 ``` bash
-App\Models\User::find(1)->getAttr('attrName');
+App\Models\User::find(1)->getAttr('attrName', false);
+```
+- Get Attribute By Name (Only value). <br/>
+Get attribute in model only value by attribute name.
+``` bash
+/**
+ * get attribute by name.
+ * get only value.
+ *
+ * @param string $attrName
+ * @param boolean $withKey default: false
+ * @return mixed
+ */
+public function getAttrValue(string $attrName, bool $withKey = false): mixed;
+```
+``` bash
+App\Models\User::find(1)->getAttrValue('attrName', false);
 ```
 - Get All Attributes. <br/>
 Get all attribute(s) in model.
 ``` bash
-public function getAttrs(): ?mixed;
+/**
+ * get all attribute belongs to model
+ *
+ * @param boolean $map default: false
+ * @return array|null
+ */
+public function getAttrs(bool $map = false): ?array;
 ```
 ``` bash
-App\Models\User::find(1)->getAttrs();
+App\Models\User::find(1)->getAttrs(false);
 ```
-- Get All Attributes as Array. <br/>
-Get all attribute(s) in model as array.
+- Get All Attributes. <br/>
+Get all attribute(s) in model only each value.
 ``` bash
-public function getAttrsAsArray(): array;
+/**
+ * get model attribute(s).
+ * get only values.
+ *
+ * @return array
+ */
+public function getAttrsValues(): array;
 ```
 ``` bash
-App\Models\User::find(1)->getAttrsAsArray();
+App\Models\User::find(1)->getAttrsValues();
 ```
 -------

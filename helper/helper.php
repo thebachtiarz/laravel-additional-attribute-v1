@@ -6,7 +6,7 @@ use TheBachtiarz\AdditionalAttribute\Interfaces\AdditionalAttributeInterface;
  * thebachtiarz additional attribute config
  *
  * @param string|null $keyName config key name | null will return all
- * @return mixed|null
+ * @return mixed
  */
 function tbadtattrconfig(?string $keyName = null)
 {
