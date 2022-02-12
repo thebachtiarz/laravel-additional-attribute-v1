@@ -17,4 +17,19 @@ trait AdditionalAttributeScopeTrait
     {
         return $query->where('name', $attrName);
     }
+
+    /**
+     * search value by attribute name
+     *
+     * @param string $modelClass
+     * @param string $attrName
+     * @param string $valueToSearch
+     * @return object|null
+     */
+    public function scopeSearchByValueAttrName($query, string $modelClass, string $attrName, string $valueToSearch): ?object
+    {
+        return $query->where('modelable_type', $modelClass)
+            ->getByName($attrName)
+            ->where('value', 'like', "%$valueToSearch%");
+    }
 }

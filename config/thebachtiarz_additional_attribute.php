@@ -21,5 +21,5 @@ return [
     | Here you can define the value type who need to parse into JSON type.
     |
     */
-    'type_need_to_json' => ["array", "object"],
+    'value_type_parse' => ["array", "object"],
 ];

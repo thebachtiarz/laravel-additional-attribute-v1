@@ -19,7 +19,7 @@ trait AdditionalAttributes
      *
      * @var array
      */
-    protected array $typeNeedToParse = [];
+    protected static array $valueTypeNeedToParse = [];
 
     // ? Public Methods
     /**
@@ -36,7 +36,7 @@ trait AdditionalAttributes
 
             throw_if(!$_attribute, 'Exception', "Attribute not Found");
 
-            $_attribute = $this->parseValueByType($_attribute);
+            $_attribute = self::parseValueByType($_attribute);
 
             return $map ? $_attribute->simpleListMap() : $_attribute;
         } catch (\Throwable $th) {
@@ -85,7 +85,7 @@ trait AdditionalAttributes
             $_result = [];
 
             foreach ($_attributes->get() as $key => $_attribute) {
-                $_attribute = $this->parseValueByType($_attribute);
+                $_attribute = self::parseValueByType($_attribute);
 
                 $_result[] = $map ? $_attribute->simpleListMap() : $_attribute;
             }
@@ -159,6 +159,36 @@ trait AdditionalAttributes
         }
     }
 
+    // ? Public Static methods
+    /**
+     * search value by attribute name
+     *
+     * @param string $attrName
+     * @param string $valueToSearch
+     * @param boolean $map
+     * @return array
+     */
+    public static function searchValueByAttr(string $attrName, string $valueToSearch, bool $map = false): array
+    {
+        $_result = [];
+
+        try {
+            $_attributes = AdditionalAttribute::searchByValueAttrName(__CLASS__, $attrName, $valueToSearch);
+
+            throw_if(!$_attributes->count(), 'Exception', "There is no Attributes");
+
+            foreach ($_attributes->get() as $key => $_attribute) {
+                $_attribute = self::parseValueByType($_attribute);
+
+                $_result[] = $map ? $_attribute->simpleListMap() : $_attribute;
+            }
+        } catch (\Throwable $th) {
+            self::logCatch($th);
+        } finally {
+            return $_result;
+        }
+    }
+
     // ? Private Methods
     /**
      * resolve value type
@@ -166,12 +196,12 @@ trait AdditionalAttributes
      * @param mixed $value
      * @return array
      */
-    private function valueResolver($value): array
+    private static function valueResolver($value): array
     {
         $valueType = gettype($value);
 
         try {
-            $valueResult = in_array($valueType, $this->typeParseResolver())
+            $valueResult = in_array($valueType, self::typeParseResolver())
                 ? self::jsonEncode($value)
                 : $value;
         } catch (\Throwable $th) {
@@ -188,10 +218,10 @@ trait AdditionalAttributes
      * @param AdditionalAttribute $additionalAttribute
      * @return AdditionalAttribute
      */
-    private function parseValueByType(AdditionalAttribute $additionalAttribute): AdditionalAttribute
+    private static function parseValueByType(AdditionalAttribute $additionalAttribute): AdditionalAttribute
     {
         try {
-            if (in_array($additionalAttribute->type, $this->typeParseResolver()))
+            if (in_array($additionalAttribute->type, self::typeParseResolver()))
                 $additionalAttribute->value = self::jsonDecode($additionalAttribute->value);
 
             return $additionalAttribute;
@@ -207,12 +237,12 @@ trait AdditionalAttributes
      *
      * @return array
      */
-    private function typeParseResolver(): array
+    private static function typeParseResolver(): array
     {
-        $_typeNeedToParse = tbadtattrconfig('type_need_to_json');
+        $_typeNeedToParse = tbadtattrconfig('value_type_parse');
 
-        if (count($this->typeNeedToParse))
-            $_typeNeedToParse = array_merge($_typeNeedToParse, $this->typeNeedToParse);
+        if (count(self::$valueTypeNeedToParse))
+            $_typeNeedToParse = array_merge($_typeNeedToParse, self::$valueTypeNeedToParse);
 
         return $_typeNeedToParse;
     }
