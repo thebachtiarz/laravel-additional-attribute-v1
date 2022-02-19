@@ -36,12 +36,10 @@ trait AdditionalAttributes
 
             throw_if(!$_attribute, 'Exception', "Attribute not Found");
 
-            $_attribute = self::parseValueByType($_attribute);
+            $_attribute = self::decodeValueResolver($_attribute);
 
             return $map ? $_attribute->simpleListMap() : $_attribute;
         } catch (\Throwable $th) {
-            self::logCatch($th);
-
             return null;
         }
     }
@@ -63,8 +61,6 @@ trait AdditionalAttributes
                 ? [$_attribute['name'] => $_attribute['value']]
                 : $_attribute['value'];
         } catch (\Throwable $th) {
-            self::logCatch($th);
-
             return null;
         }
     }
@@ -85,15 +81,13 @@ trait AdditionalAttributes
             $_result = [];
 
             foreach ($_attributes->get() as $key => $_attribute) {
-                $_attribute = self::parseValueByType($_attribute);
+                $_attribute = self::decodeValueResolver($_attribute);
 
                 $_result[] = $map ? $_attribute->simpleListMap() : $_attribute;
             }
 
             return $_result;
         } catch (\Throwable $th) {
-            self::logCatch($th);
-
             return null;
         }
     }
@@ -118,7 +112,6 @@ trait AdditionalAttributes
 
             $result = [tbadtattrconfig('return_key_name') => $result];
         } catch (\Throwable $th) {
-            self::logCatch($th);
         } finally {
             return $result;
         }
@@ -136,7 +129,7 @@ trait AdditionalAttributes
         try {
             $_attribute = $this->getAttr($attrName);
 
-            [$valueType, $valueResult] = $this->valueResolver($attrValue);
+            [$valueType, $valueResult] = self::encodeValueResolver($attrValue);
 
             if ($_attribute) {
                 $_attribute->update([
@@ -178,12 +171,11 @@ trait AdditionalAttributes
             throw_if(!$_attributes->count(), 'Exception', "There is no Attributes");
 
             foreach ($_attributes->get() as $key => $_attribute) {
-                $_attribute = self::parseValueByType($_attribute);
+                $_attribute = self::decodeValueResolver($_attribute);
 
                 $_result[] = $map ? $_attribute->simpleListMap() : $_attribute;
             }
         } catch (\Throwable $th) {
-            self::logCatch($th);
         } finally {
             return $_result;
         }
@@ -191,12 +183,12 @@ trait AdditionalAttributes
 
     // ? Private Methods
     /**
-     * resolve value type
+     * encode value attribute
      *
      * @param mixed $value
      * @return array
      */
-    private static function valueResolver($value): array
+    private static function encodeValueResolver($value): array
     {
         $valueType = gettype($value);
 
@@ -204,6 +196,10 @@ trait AdditionalAttributes
             $valueResult = in_array($valueType, self::typeParseResolver())
                 ? self::jsonEncode($value)
                 : $value;
+
+            $valueResult = $valueType === "boolean"
+                ? ($valueResult ? "1" : "0")
+                : $valueResult;
         } catch (\Throwable $th) {
             self::logCatch($th);
         } finally {
@@ -212,13 +208,13 @@ trait AdditionalAttributes
     }
 
     /**
-     * parse value attribute.
+     * decode value attribute.
      * based from parse type.
      *
      * @param AdditionalAttribute $additionalAttribute
      * @return AdditionalAttribute
      */
-    private static function parseValueByType(AdditionalAttribute $additionalAttribute): AdditionalAttribute
+    private static function decodeValueResolver(AdditionalAttribute $additionalAttribute): AdditionalAttribute
     {
         try {
             if (in_array($additionalAttribute->type, self::typeParseResolver()))
