@@ -4,7 +4,7 @@
 
 -------
 
-### Installation
+## Installation
 - composer config (only if you have access)
 ``` bash
 composer config repositories.thebachtiarz/laravel-additional-attribute-v1 git git@github.com:thebachtiarz/laravel-additional-attribute-v1.git
@@ -12,7 +12,11 @@ composer config repositories.thebachtiarz/laravel-additional-attribute-v1 git gi
 
 - install repository
 ``` bash
-composer require thebachtiarz/laravel-additional-attribute-v1
+Laravel 9:
+composer require thebachtiarz/laravel-additional-attribute-v1:^2.0
+
+Laravel 8:
+composer require thebachtiarz/laravel-additional-attribute-v1:^1.0
 ```
 
 - vendor publish
@@ -25,7 +29,7 @@ php artisan vendor:publish --provider="TheBachtiarz\AdditionalAttribute\Addition
 php artisan migrate
 ```
 
-### Implementation
+## Implementation
 - add Class Trait Service below here into Model.
 ``` bash
 use \TheBachtiarz\AdditionalAttribute\Service\AdditionalAttributes;
@@ -44,9 +48,8 @@ class User extends Model
 }
 ```
 -------
-### Feature
-
-- Add or Update Attribute. <br/>
+## Feature
+- ### Add or Update Attribute. <br/>
 Create new attribute or Update existing attribute in model.
 
 ``` bash
@@ -62,7 +65,7 @@ public function setAttr(string $attrName, $attrValue): ?AdditionalAttribute;
 ``` bash
 App\Models\User::find(1)->setAttr('attrName', 'attrValue');
 ```
-- Get Attribute By Name. <br/>
+- ### Get Attribute By Name. <br/>
 Get attribute in model by attribute name.
 ``` bash
 /**
@@ -77,7 +80,7 @@ public function getAttr(string $attrName, bool $map = false): mixed;
 ``` bash
 App\Models\User::find(1)->getAttr('attrName', false);
 ```
-- Get Attribute By Name (Only value). <br/>
+- ### Get Attribute By Name (Only value). <br/>
 Get attribute in model only value by attribute name.
 ``` bash
 /**
@@ -93,7 +96,7 @@ public function getAttrValue(string $attrName, bool $withKey = false): mixed;
 ``` bash
 App\Models\User::find(1)->getAttrValue('attrName', false);
 ```
-- Get All Attributes. <br/>
+- ### Get All Attributes. <br/>
 Get all attribute(s) in model.
 ``` bash
 /**
@@ -107,18 +110,20 @@ public function getAttrs(bool $map = false): ?array;
 ``` bash
 App\Models\User::find(1)->getAttrs(false);
 ```
-- Get All Attributes. <br/>
-Get all attribute(s) in model only each value.
+- ### Search By Attributes. <br/>
+Search value by attribute name.
 ``` bash
 /**
- * get model attribute(s).
- * get only values.
+ * search value by attribute name
  *
+ * @param string $attrName
+ * @param string $valueToSearch
+ * @param boolean $map
  * @return array
  */
-public function getAttrsValues(): array;
+public static function searchValueByAttr(string $attrName, string $valueToSearch, bool $map = false): array;
 ```
 ``` bash
-App\Models\User::find(1)->getAttrsValues();
+App\Models\User::searchValueByAttr('attributeName', 'valueToSearch', false);
 ```
 -------
