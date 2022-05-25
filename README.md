@@ -3,6 +3,9 @@
 ### A Simple Additional Attribute for Laravel Project v1
 
 -------
+## Requires
+- [laravel/framework](https://github.com/laravel/framework/) v9.x
+- [thebachtiarz/laravel-toolkit-v1](https://github.com/thebachtiarz/laravel-toolkit-v1/) v2.x
 
 ## Installation
 - composer config (only if you have access)
@@ -12,11 +15,7 @@ composer config repositories.thebachtiarz/laravel-additional-attribute-v1 git gi
 
 - install repository
 ``` bash
-Laravel 9:
-composer require thebachtiarz/laravel-additional-attribute-v1:^2.0
-
-Laravel 8:
-composer require thebachtiarz/laravel-additional-attribute-v1:^1.0
+composer require thebachtiarz/laravel-additional-attribute-v1
 ```
 
 - vendor publish
