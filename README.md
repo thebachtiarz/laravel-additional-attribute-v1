@@ -53,7 +53,7 @@ Create new attribute or Update existing attribute in model.
 
 ``` bash
 /**
- * create or update attribute
+ * Create or update attribute
  *
  * @param string $attrName
  * @param mixed $attrValue
@@ -68,7 +68,7 @@ App\Models\User::find(1)->setAttr('attrName', 'attrValue');
 Get attribute in model by attribute name.
 ``` bash
 /**
- * get attribute by name
+ * Get attribute by name
  *
  * @param string $attrName
  * @param boolean $map default: false
@@ -83,8 +83,8 @@ App\Models\User::find(1)->getAttr('attrName', false);
 Get attribute in model only value by attribute name.
 ``` bash
 /**
- * get attribute by name.
- * get only value.
+ * Get attribute by name.
+ * Get only value.
  *
  * @param string $attrName
  * @param boolean $withKey default: false
@@ -99,7 +99,7 @@ App\Models\User::find(1)->getAttrValue('attrName', false);
 Get all attribute(s) in model.
 ``` bash
 /**
- * get all attribute belongs to model
+ * Get all attribute belongs to model
  *
  * @param boolean $map default: false
  * @return array|null
@@ -113,7 +113,7 @@ App\Models\User::find(1)->getAttrs(false);
 Search value by attribute name.
 ``` bash
 /**
- * search value by attribute name
+ * Search value by attribute name
  *
  * @param string $attrName
  * @param string $valueToSearch

@@ -11,7 +11,7 @@ class AdditionalAttribute extends Model
     use AdditionalAttributeMapTrait, AdditionalAttributeScopeTrait;
 
     /**
-     * the attributes that that are mass assignable.
+     * The attributes that that are mass assignable.
      *
      * @var array
      */
@@ -23,7 +23,7 @@ class AdditionalAttribute extends Model
 
     // ? Relations
     /**
-     * modelable morph | belongs to.
+     * Modelable morph | belongs to.
      *
      * @return MorphTo
      */

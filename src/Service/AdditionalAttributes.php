@@ -15,7 +15,7 @@ trait AdditionalAttributes
     use ArrayHelper, ErrorLogTrait;
 
     /**
-     * value type who need to parsing
+     * Value type who need to parsing
      *
      * @var array
      */
@@ -23,7 +23,7 @@ trait AdditionalAttributes
 
     // ? Public Methods
     /**
-     * get attribute by name
+     * Get attribute by name
      *
      * @param string $attrName
      * @param boolean $map default: false
@@ -45,8 +45,8 @@ trait AdditionalAttributes
     }
 
     /**
-     * get attribute by name.
-     * get only value.
+     * Get attribute by name.
+     * Get only value.
      *
      * @param string $attrName
      * @param boolean $withKey default: false
@@ -66,7 +66,7 @@ trait AdditionalAttributes
     }
 
     /**
-     * get all attribute belongs to model
+     * Get all attribute belongs to model
      *
      * @param boolean $map default: false
      * @return array|null
@@ -93,8 +93,8 @@ trait AdditionalAttributes
     }
 
     /**
-     * get model attribute(s).
-     * get only values.
+     * Get model attribute(s).
+     * Get only values.
      *
      * @return array
      */
@@ -118,7 +118,7 @@ trait AdditionalAttributes
     }
 
     /**
-     * create or update attribute
+     * Create or update attribute
      *
      * @param string $attrName
      * @param mixed $attrValue
@@ -154,7 +154,7 @@ trait AdditionalAttributes
 
     // ? Public Static methods
     /**
-     * search value by attribute name
+     * Search value by attribute name
      *
      * @param string $attrName
      * @param string $valueToSearch
@@ -183,7 +183,7 @@ trait AdditionalAttributes
 
     // ? Private Methods
     /**
-     * encode value attribute
+     * Encode value attribute
      *
      * @param mixed $value
      * @return array
@@ -208,8 +208,8 @@ trait AdditionalAttributes
     }
 
     /**
-     * decode value attribute.
-     * based from parse type.
+     * Decode value attribute.
+     * Based from parse type.
      *
      * @param AdditionalAttribute $additionalAttribute
      * @return AdditionalAttribute
@@ -229,7 +229,7 @@ trait AdditionalAttributes
     }
 
     /**
-     * get value type who need to parse into json
+     * Get value type who need to parse into json
      *
      * @return array
      */
@@ -245,7 +245,7 @@ trait AdditionalAttributes
 
     // ? Relations
     /**
-     * get the attributes that belong to model
+     * Get the attributes that belong to model
      *
      * @return MorphMany
      */

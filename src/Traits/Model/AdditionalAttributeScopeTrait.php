@@ -8,7 +8,7 @@ namespace TheBachtiarz\AdditionalAttribute\Traits\Model;
 trait AdditionalAttributeScopeTrait
 {
     /**
-     * get attribute by name
+     * Get attribute by name
      *
      * @param string $attrName
      * @return object|null
@@ -19,7 +19,7 @@ trait AdditionalAttributeScopeTrait
     }
 
     /**
-     * search value by attribute name
+     * Search value by attribute name
      *
      * @param string $modelClass
      * @param string $attrName

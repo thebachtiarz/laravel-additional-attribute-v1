@@ -12,7 +12,7 @@ trait AdditionalAttributeMapTrait
     use CarbonHelper;
 
     /**
-     * additional attribute(s) simple list map
+     * Additional attribute(s) simple list map
      *
      * @return array
      */

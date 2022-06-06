@@ -8,7 +8,7 @@ use TheBachtiarz\AdditionalAttribute\Interfaces\AdditionalAttributeInterface;
 class AdditionalAttributeServiceProvider extends ServiceProvider
 {
     /**
-     * register module additional attribute
+     * Register module additional attribute
      *
      * @return void
      */
@@ -22,7 +22,7 @@ class AdditionalAttributeServiceProvider extends ServiceProvider
     }
 
     /**
-     * boot module additional attribute
+     * Boot module additional attribute
      *
      * @return void
      */
