@@ -2,33 +2,38 @@
 
 namespace TheBachtiarz\AdditionalAttribute\Traits\Model;
 
+use Illuminate\Database\Eloquent\Builder;
+
 /**
  * Additional Attribute Scope Trait
  */
 trait AdditionalAttributeScopeTrait
 {
     /**
-     * Get attribute by name
+     * Get by name
      *
+     * @param Builder $builder
      * @param string $attrName
-     * @return object|null
+     * @return Builder
      */
-    public function scopeGetByName($query, string $attrName): ?object
+    public function scopeGetByName(Builder $builder, string $attrName): Builder
     {
-        return $query->where('name', $attrName);
+        return $builder->where('name', $attrName);
     }
 
     /**
      * Search value by attribute name
      *
-     * @param string $modelClass
+     * @param Builder $builder
+     * @param string $classModel
      * @param string $attrName
      * @param string $valueToSearch
-     * @return object|null
+     * @return Builder
      */
-    public function scopeSearchByValueAttrName($query, string $modelClass, string $attrName, string $valueToSearch): ?object
+    public function scopeSearchByValueAttrName(Builder $builder, string $classModel, string $attrName, string $valueToSearch): Builder
     {
-        return $query->where('modelable_type', $modelClass)
+        return $builder
+            ->where('modelable_type', $classModel)
             ->getByName($attrName)
             ->where('value', 'like', "%$valueToSearch%");
     }

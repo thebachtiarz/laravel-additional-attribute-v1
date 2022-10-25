@@ -1,6 +1,6 @@
 <?php
 
-use TheBachtiarz\AdditionalAttribute\Interfaces\AdditionalAttributeInterface;
+use TheBachtiarz\AdditionalAttribute\Interfaces\Config\AdditionalAttributeConfigInterface;
 
 /**
  * TheBachtiarz additional attribute config
@@ -10,7 +10,7 @@ use TheBachtiarz\AdditionalAttribute\Interfaces\AdditionalAttributeInterface;
  */
 function tbadtattrconfig(?string $keyName = null): mixed
 {
-    $configName = AdditionalAttributeInterface::ADDITIONAL_ATTRIBUTE_CONFIG_NAME;
+    $configName = AdditionalAttributeConfigInterface::ADDITIONAL_ATTRIBUTE_CONFIG_NAME;
 
     return iconv_strlen($keyName)
         ? config("{$configName}.{$keyName}")

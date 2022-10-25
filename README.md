@@ -20,7 +20,7 @@ composer require thebachtiarz/laravel-additional-attribute-v1
 
 - vendor publish
 ``` bash
-php artisan vendor:publish --provider="TheBachtiarz\AdditionalAttribute\AdditionalAttributeServiceProvider"
+php artisan vendor:publish --provider="TheBachtiarz\AdditionalAttribute\ServiceProvider"
 ```
 
 - database migration

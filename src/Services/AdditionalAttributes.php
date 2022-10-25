@@ -1,8 +1,9 @@
 <?php
 
-namespace TheBachtiarz\AdditionalAttribute\Service;
+namespace TheBachtiarz\AdditionalAttribute\Services;
 
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use TheBachtiarz\AdditionalAttribute\Interfaces\Model\AdditionalAttributeModelInterface;
 use TheBachtiarz\AdditionalAttribute\Models\AdditionalAttribute;
 use TheBachtiarz\Toolkit\Helper\App\Converter\ArrayHelper;
 use TheBachtiarz\Toolkit\Helper\App\Log\ErrorLogTrait;
@@ -29,7 +30,7 @@ trait AdditionalAttributes
      * @param boolean $map default: false
      * @return mixed
      */
-    public function getAttr(string $attrName, bool $map = false)
+    public function getAttr(string $attrName, bool $map = false): mixed
     {
         try {
             $_attribute = $this->attributes()->getByName($attrName)->first();
@@ -52,14 +53,14 @@ trait AdditionalAttributes
      * @param boolean $withKey default: false
      * @return mixed
      */
-    public function getAttrValue(string $attrName, bool $withKey = false)
+    public function getAttrValue(string $attrName, bool $withKey = false): mixed
     {
         try {
             $_attribute = $this->getAttr($attrName);
 
             return $withKey
-                ? [$_attribute['name'] => $_attribute['value']]
-                : $_attribute['value'];
+                ? [$_attribute[AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_NAME] => $_attribute[AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_VALUE]]
+                : $_attribute[AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_VALUE];
         } catch (\Throwable $th) {
             return null;
         }
@@ -80,10 +81,13 @@ trait AdditionalAttributes
 
             $_result = [];
 
-            foreach ($_attributes->get() as $key => $_attribute) {
+            foreach ($_attributes->get() as $key => &$_attribute) {
+                /**
+                 * @var AdditionalAttribute $_attribute
+                 */
                 $_attribute = self::decodeValueResolver($_attribute);
 
-                $_result[] = $map ? $_attribute->simpleListMap() : $_attribute;
+                $_result[] = $map ? $_attribute->simpleListMap() : $_attribute?->toArray();
             }
 
             return $_result;
@@ -108,7 +112,7 @@ trait AdditionalAttributes
             throw_if(!count($_attributes), 'Exception', "Attributes not found");
 
             foreach ($_attributes as $key => $_attribute)
-                $result[$_attribute['name']] = $_attribute['value'];
+                $result[$_attribute[AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_NAME]] = $_attribute[AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_VALUE];
 
             $result = [tbadtattrconfig('return_key_name') => $result];
         } catch (\Throwable $th) {
@@ -124,26 +128,32 @@ trait AdditionalAttributes
      * @param mixed $attrValue
      * @return AdditionalAttribute|null
      */
-    public function setAttr(string $attrName, $attrValue): ?AdditionalAttribute
+    public function setAttr(string $attrName, mixed $attrValue): ?AdditionalAttribute
     {
         try {
             $_attribute = $this->getAttr($attrName);
 
             [$valueType, $valueResult] = self::encodeValueResolver($attrValue);
 
+            /**
+             * If exist before, then update
+             */
             if ($_attribute) {
                 $_attribute->update([
-                    'type' => $valueType,
-                    'value' => $valueResult
+                    AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_TYPE => $valueType,
+                    AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_VALUE => $valueResult
                 ]);
 
                 return $_attribute;
             }
 
+            /**
+             * If not exist before, then create new
+             */
             return $this->attributes()->create([
-                'name' => $attrName,
-                'type' => $valueType,
-                'value' => $valueResult
+                AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_NAME => $attrName,
+                AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_TYPE => $valueType,
+                AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_VALUE => $valueResult
             ]);
         } catch (\Throwable $th) {
             self::logCatch($th);
@@ -170,10 +180,13 @@ trait AdditionalAttributes
 
             throw_if(!$_attributes->count(), 'Exception', "There is no Attributes");
 
-            foreach ($_attributes->get() as $key => $_attribute) {
+            foreach ($_attributes->get() as $key => &$_attribute) {
+                /**
+                 * @var AdditionalAttribute $_attribute
+                 */
                 $_attribute = self::decodeValueResolver($_attribute);
 
-                $_result[] = $map ? $_attribute->simpleListMap() : $_attribute;
+                $_result[] = $map ? $_attribute->simpleListMap() : $_attribute?->toArray();
             }
         } catch (\Throwable $th) {
         } finally {
@@ -188,7 +201,7 @@ trait AdditionalAttributes
      * @param mixed $value
      * @return array
      */
-    private static function encodeValueResolver($value): array
+    private static function encodeValueResolver(mixed $value): array
     {
         $valueType = gettype($value);
 
@@ -217,8 +230,8 @@ trait AdditionalAttributes
     private static function decodeValueResolver(AdditionalAttribute $additionalAttribute): AdditionalAttribute
     {
         try {
-            if (in_array($additionalAttribute->type, self::typeParseResolver()))
-                $additionalAttribute->value = self::jsonDecode($additionalAttribute->value);
+            if (in_array($additionalAttribute->getType(), self::typeParseResolver()))
+                $additionalAttribute->setValue(self::jsonDecode($additionalAttribute->getValue()));
 
             return $additionalAttribute;
         } catch (\Throwable $th) {

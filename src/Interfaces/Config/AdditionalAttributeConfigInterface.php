@@ -1,8 +1,8 @@
 <?php
 
-namespace TheBachtiarz\AdditionalAttribute\Interfaces;
+namespace TheBachtiarz\AdditionalAttribute\Interfaces\Config;
 
-interface AdditionalAttributeInterface
+interface AdditionalAttributeConfigInterface
 {
     /**
      * Additional attribute config name

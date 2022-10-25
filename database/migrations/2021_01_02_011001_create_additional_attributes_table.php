@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use TheBachtiarz\AdditionalAttribute\Interfaces\Model\AdditionalAttributeModelInterface;
 
 return new class extends Migration
 {
@@ -16,9 +17,9 @@ return new class extends Migration
         Schema::create('additional_attributes', function (Blueprint $table) {
             $table->id();
             $table->morphs('modelable');
-            $table->string('name');
-            $table->string('type');
-            $table->text('value');
+            $table->string(AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_NAME);
+            $table->string(AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_TYPE);
+            $table->text(AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_VALUE);
             $table->timestamps();
         });
     }

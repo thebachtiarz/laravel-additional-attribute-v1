@@ -22,8 +22,8 @@ trait AdditionalAttributeMapTrait
             'attribute_name' => $this->name,
             'attribute_type' => $this->type,
             'attribute_value' => $this->value,
-            'attribute_created' => self::humanDateTime($this->created_at),
-            'attribute_updated' => self::humanDateTime($this->updated_at)
+            'attribute_created' => self::anyConvDateToTimestamp($this->created_at),
+            'attribute_updated' => self::anyConvDateToTimestamp($this->updated_at)
         ];
     }
 }

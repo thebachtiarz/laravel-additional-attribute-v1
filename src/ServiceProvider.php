@@ -2,10 +2,10 @@
 
 namespace TheBachtiarz\AdditionalAttribute;
 
-use Illuminate\Support\ServiceProvider;
-use TheBachtiarz\AdditionalAttribute\Interfaces\AdditionalAttributeInterface;
+use Illuminate\Support\ServiceProvider as LaravelServiceProvider;
+use TheBachtiarz\AdditionalAttribute\Interfaces\Config\AdditionalAttributeConfigInterface;
 
-class AdditionalAttributeServiceProvider extends ServiceProvider
+class ServiceProvider extends LaravelServiceProvider
 {
     /**
      * Register module additional attribute
@@ -30,7 +30,7 @@ class AdditionalAttributeServiceProvider extends ServiceProvider
     {
         if (app()->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/' . AdditionalAttributeInterface::ADDITIONAL_ATTRIBUTE_CONFIG_NAME . '.php' => config_path(AdditionalAttributeInterface::ADDITIONAL_ATTRIBUTE_CONFIG_NAME . '.php'),
+                __DIR__ . '/../config/' . AdditionalAttributeConfigInterface::ADDITIONAL_ATTRIBUTE_CONFIG_NAME . '.php' => config_path(AdditionalAttributeConfigInterface::ADDITIONAL_ATTRIBUTE_CONFIG_NAME . '.php'),
             ], 'thebachtiarz-additional-attribute-config');
 
             $this->publishes([
