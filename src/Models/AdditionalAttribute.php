@@ -24,7 +24,7 @@ class AdditionalAttribute extends Model implements AdditionalAttributeModelInter
      */
     public function getName(): ?string
     {
-        return $this->__get(self::ADDITIONAL_ATTRIBUTE_ID);
+        return $this->__get(self::ADDITIONAL_ATTRIBUTE_NAME);
     }
 
     /**
