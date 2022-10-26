@@ -59,8 +59,8 @@ trait AdditionalAttributes
             $_attribute = $this->getAttr($attrName);
 
             return $withKey
-                ? [$_attribute[AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_NAME] => $_attribute[AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_VALUE]]
-                : $_attribute[AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_VALUE];
+                ? [$_attribute->getName() => $_attribute->getValue()]
+                : $_attribute->getValue();
         } catch (\Throwable $th) {
             return null;
         }
@@ -70,9 +70,9 @@ trait AdditionalAttributes
      * Get all attribute belongs to model
      *
      * @param boolean $map
-     * @return AdditionalAttribute|array|null
+     * @return array<AdditionalAttribute>|array|null
      */
-    public function getAttrs(bool $map = false): AdditionalAttribute|array|null
+    public function getAttrs(bool $map = false): array|null
     {
         try {
             $_attributes = $this->attributes();
@@ -111,8 +111,12 @@ trait AdditionalAttributes
 
             throw_if(!count($_attributes), 'Exception', "Attributes not found");
 
-            foreach ($_attributes as $key => $_attribute)
-                $result[$_attribute[AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_NAME]] = $_attribute[AdditionalAttributeModelInterface::ADDITIONAL_ATTRIBUTE_VALUE];
+            foreach ($_attributes as $key => $_attribute) {
+                /**
+                 * @var AdditionalAttribute $_attribute
+                 */
+                $result[$_attribute->getName()] = $_attribute->getValue();
+            }
 
             $result = [tbadtattrconfig('return_key_name') => $result];
         } catch (\Throwable $th) {
@@ -250,8 +254,9 @@ trait AdditionalAttributes
     private static function decodeValueResolver(AdditionalAttribute $additionalAttribute): AdditionalAttribute
     {
         try {
-            if (in_array($additionalAttribute->getType(), self::typeParseResolver()))
+            if (in_array($additionalAttribute->getType(), self::typeParseResolver())) {
                 $additionalAttribute->setValue(self::jsonDecode($additionalAttribute->getValue()));
+            }
 
             return $additionalAttribute;
         } catch (\Throwable $th) {
@@ -270,15 +275,16 @@ trait AdditionalAttributes
     {
         $_typeNeedToParse = tbadtattrconfig('value_type_parse');
 
-        if (count(self::$valueTypeNeedToParse))
+        if (count(self::$valueTypeNeedToParse)) {
             $_typeNeedToParse = array_merge($_typeNeedToParse, self::$valueTypeNeedToParse);
+        }
 
         return $_typeNeedToParse;
     }
 
     // ? Relations
     /**
-     * Get the attributes that belong to model
+     * Get the attributes that belongs to this model
      *
      * @return MorphMany
      */
