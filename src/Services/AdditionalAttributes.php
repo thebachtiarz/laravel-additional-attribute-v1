@@ -27,10 +27,10 @@ trait AdditionalAttributes
      * Get attribute by name
      *
      * @param string $attrName
-     * @param boolean $map default: false
-     * @return mixed
+     * @param boolean $map
+     * @return AdditionalAttribute|array|null
      */
-    public function getAttr(string $attrName, bool $map = false): mixed
+    public function getAttr(string $attrName, bool $map = false): AdditionalAttribute|array|null
     {
         try {
             $_attribute = $this->attributes()->getByName($attrName)->first();
@@ -69,10 +69,10 @@ trait AdditionalAttributes
     /**
      * Get all attribute belongs to model
      *
-     * @param boolean $map default: false
-     * @return array|null
+     * @param boolean $map
+     * @return AdditionalAttribute|array|null
      */
-    public function getAttrs(bool $map = false): ?array
+    public function getAttrs(bool $map = false): AdditionalAttribute|array|null
     {
         try {
             $_attributes = $this->attributes();
@@ -87,7 +87,7 @@ trait AdditionalAttributes
                  */
                 $_attribute = self::decodeValueResolver($_attribute);
 
-                $_result[] = $map ? $_attribute->simpleListMap() : $_attribute?->toArray();
+                $_result[] = $map ? $_attribute->simpleListMap() : $_attribute;
             }
 
             return $_result;
@@ -162,6 +162,23 @@ trait AdditionalAttributes
         }
     }
 
+    /**
+     * Delete by attribute name
+     *
+     * @param string $attrName
+     * @return boolean
+     */
+    public function deleteAttr(string $attrName): bool
+    {
+        try {
+            return $this->getAttr($attrName)->delete();
+        } catch (\Throwable $th) {
+            self::logCatch($th);
+
+            return false;
+        }
+    }
+
     // ? Public Static methods
     /**
      * Search value by attribute name
@@ -176,6 +193,9 @@ trait AdditionalAttributes
         $_result = [];
 
         try {
+            /**
+             * @var \Illuminate\Database\Eloquent\Builder $_attributes
+             */
             $_attributes = AdditionalAttribute::searchByValueAttrName(__CLASS__, $attrName, $valueToSearch);
 
             throw_if(!$_attributes->count(), 'Exception', "There is no Attributes");
